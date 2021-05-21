@@ -9,4 +9,4 @@ Makes creating Spring Entity, Controller and Repositories simple.
 `spring_entity_gen.py "Book Author" com.pak.age`
 
 ### Without Controller
-`spring_entity_gen.py "Book Author" com.pak.age` skp_cnt
+`spring_entity_gen.py "Book Author" com.pak.age skp_cnt`
