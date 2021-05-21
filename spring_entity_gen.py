@@ -11,6 +11,7 @@ REPO_FILE = MY_PATH + '/repository_template.txt'
 CTRL_FILE = MY_PATH + '/controller_template.txt'
 AUDIT_MODEL_FILE = MY_PATH + '/audit_model_template.txt'
 
+
 def make_code_from_template(replacements, template):
     template_content = None
     try:
@@ -67,10 +68,10 @@ class SpringEntityBuilder(object):
         self.repo_path = self.java_src_package_path + '/repositories'
         self.controller_path = self.java_src_package_path + '/controllers'
         self.model_path_with_name = '{}/{}.java'.format(
-            self.model_path, 
+            self.model_path,
             self.template_vars['java_class_name'])
         self.repo_path_with_name = '{}/{}Repository.java'.format(
-            self.repo_path, 
+            self.repo_path,
             self.template_vars['java_class_name'])
         self.ctrl_path_w_name = '{}/{}Controller.java'.format(
             self.controller_path,

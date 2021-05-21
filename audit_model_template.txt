@@ -22,6 +22,8 @@ import java.util.Date;
         allowGetters = true
 )
 public abstract class AuditModel implements Serializable {
+    // TODO: requires in build.gradle: implementation 'org.springframework.boot:spring-boot-starter-validation'
+    // TODO: requires in Startup class: @EnableJpaAuditing
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date_created", nullable = false, updatable = false)
