@@ -10,12 +10,12 @@ import javax.persistence.*;
 @Accessors(chain=true)
 @Data
 @Entity
-@Table(name="%(sql_snake_case)s")
+@Table(name="%(snake_case_plural)s")
 public class %(java_class_name)s extends AuditModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "%(sql_snake_case)s_generator")
-    @SequenceGenerator(name="%(sql_snake_case)s_generator", sequenceName = "%(sql_snake_case)s_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "%(snake_case_plural)s_generator")
+    @SequenceGenerator(name="%(snake_case_plural)s_generator", sequenceName = "%(snake_case_plural)s_seq", allocationSize=1)
     @Column(name = "id", updatable = false, nullable = false)
     private long id;
 }

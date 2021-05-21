@@ -10,18 +10,18 @@ import %(package_name)s.models.%(java_class_name)s;
 import %(package_name)s.repositories.%(java_class_name)sRepository;
 
 @Controller    // This means that this class is a Controller
-@RequestMapping(path="/%(java_class_name)s")
+@RequestMapping(path="/api/v1/%(camel_case_plural)s")
 public class %(java_class_name)sController {
 
-    private final %(java_class_name)sRepository %(sql_snake_case_single)sRepository;
+    private final %(java_class_name)sRepository %(camel_case)sRepository;
 
     @Autowired
-    public %(java_class_name)sController(%(java_class_name)sRepository %(sql_snake_case_single)sRepository) {
-        this.%(sql_snake_case_single)sRepository = %(sql_snake_case_single)sRepository;
+    public %(java_class_name)sController(%(java_class_name)sRepository %(camel_case)sRepository) {
+        this.%(camel_case)sRepository = %(camel_case)sRepository;
     }
 
     @GetMapping(path="/all")
     public @ResponseBody Iterable<%(java_class_name)s> getAll%(java_class_name)s(Pageable page) {
-        return %(sql_snake_case_single)sRepository.findAll(Pageable.unpaged());
+        return %(camel_case)sRepository.findAll(Pageable.unpaged());
     }
 }
