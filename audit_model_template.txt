@@ -1,0 +1,35 @@
+package %(package_name)s.models;
+
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
+import lombok.experimental.Accessors;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Date;
+
+@Data
+@Accessors(chain = true)
+@MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
+@JsonIgnoreProperties(
+        value = {"dateCreated", "dateUpdated"},
+        allowGetters = true
+)
+public abstract class AuditModel implements Serializable {
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "date_created", nullable = false, updatable = false)
+    @CreatedDate
+    private Date dateCreated;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "date_updated")
+    @LastModifiedDate
+    private Date dateUpdated;
+}

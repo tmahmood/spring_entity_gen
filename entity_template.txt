@@ -1,0 +1,21 @@
+package %(package_name)s.models;
+
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+import lombok.Data;
+import javax.persistence.*;
+
+
+@EqualsAndHashCode(callSuper = true)
+@Accessors(chain=true)
+@Data
+@Entity
+@Table(name="%(sql_snake_case)s")
+public class %(java_class_name)s extends AuditModel {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "%(sql_snake_case)s_generator")
+    @SequenceGenerator(name="%(sql_snake_case)s_generator", sequenceName = "%(sql_snake_case)s_seq", allocationSize=1)
+    @Column(name = "id", updatable = false, nullable = false)
+    private long id;
+}

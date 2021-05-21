@@ -1,0 +1,27 @@
+package %(package_name)s.controllers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import %(package_name)s.models.%(java_class_name)s;
+import %(package_name)s.repositories.%(java_class_name)sRepository;
+
+@Controller    // This means that this class is a Controller
+@RequestMapping(path="/%(java_class_name)s")
+public class %(java_class_name)sController {
+
+    private final %(java_class_name)sRepository %(sql_snake_case_single)sRepository;
+
+    @Autowired
+    public %(java_class_name)sController(%(java_class_name)sRepository %(sql_snake_case_single)sRepository) {
+        this.%(sql_snake_case_single)sRepository = %(sql_snake_case_single)sRepository;
+    }
+
+    @GetMapping(path="/all")
+    public @ResponseBody Iterable<%(java_class_name)s> getAll%(java_class_name)s(Pageable page) {
+        return %(sql_snake_case_single)sRepository.findAll(Pageable.unpaged());
+    }
+}

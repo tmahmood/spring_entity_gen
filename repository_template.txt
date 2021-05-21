@@ -1,0 +1,10 @@
+package %(package_name)s.repositories;
+
+import org.springframework.data.repository.PagingAndSortingRepository;
+
+
+import %(package_name)s.models.%(java_class_name)s;
+
+public interface %(java_class_name)sRepository extends PagingAndSortingRepository<%(java_class_name)s, Long> { 
+
+}
