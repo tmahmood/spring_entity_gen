@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-import sys
 import os.path
+import sys
+
 import inflect
 
 MY_PATH = os.path.dirname(os.path.realpath(__file__))
@@ -38,6 +39,10 @@ def write_from_template(replacements, template, output):
     write_to_file(output, content)
 
 
+def make_nice_names(s):
+    return s[:1].lower() + s[1:] if s else ''
+
+
 def make_java_class_names(input_class_name, replacements):
     """ 
         @param: "Book Author"
@@ -48,10 +53,9 @@ def make_java_class_names(input_class_name, replacements):
             java variable name: bookAuthor
             api endpoint: bookAuthors
     """
-    func = lambda s: s[:1].lower() + s[1:] if s else ''
     p = inflect.engine()
     replacements['java_class_name'] = input_class_name.title().replace(' ', '')
-    replacements['camel_case'] = func(input_class_name).replace(' ', '')
+    replacements['camel_case'] = make_nice_names(input_class_name).replace(' ', '')
     replacements['camel_case_plural'] = p.plural(replacements['camel_case'])
     replacements['snake_case_plural'] = p.plural(input_class_name.lower().replace(' ', '_'))
 
@@ -64,9 +68,11 @@ class SpringEntityBuilder(object):
         self.template_vars = {'package_name': package_name}
         make_java_class_names(java_class_name, self.template_vars)
         self.java_src_package_path = 'src/main/java/%s' % package_name.replace('.', '/')
-        self.model_path = self.java_src_package_path + '/models'
-        self.repo_path = self.java_src_package_path + '/repositories'
-        self.controller_path = self.java_src_package_path + '/controllers'
+        # make paths
+        self.model_path = f'{self.java_src_package_path}/{java_class_name}'
+        self.repo_path = f'{self.java_src_package_path}/{java_class_name}'
+        self.controller_path = f'{self.java_src_package_path}/{java_class_name}'
+        #
         self.model_path_with_name = '{}/{}.java'.format(
             self.model_path,
             self.template_vars['java_class_name'])
@@ -78,43 +84,43 @@ class SpringEntityBuilder(object):
             self.template_vars['java_class_name'])
 
 
-def generate_from_entity_template(entityDetails):
-    write_from_template(entityDetails.template_vars, ENTITY_FILE, entityDetails.model_path_with_name)
+def generate_from_entity_template(entity_details):
+    write_from_template(entity_details.template_vars, ENTITY_FILE, entity_details.model_path_with_name)
 
 
-def generate_from_repo_template(entityDetails):
-    write_from_template(entityDetails.template_vars, REPO_FILE, entityDetails.repo_path_with_name)
+def generate_from_repo_template(entity_details):
+    write_from_template(entity_details.template_vars, REPO_FILE, entity_details.repo_path_with_name)
 
 
-def generate_from_controller_template(entityDetails):
-    write_from_template(entityDetails.template_vars, CTRL_FILE, entityDetails.ctrl_path_w_name)
+def generate_from_controller_template(entity_details):
+    write_from_template(entity_details.template_vars, CTRL_FILE, entity_details.ctrl_path_w_name)
 
 
-def make_directories(entityDetails):
-    os.makedirs(entityDetails.java_src_package_path, exist_ok=True)
-    os.makedirs(entityDetails.model_path, exist_ok=True)
-    os.makedirs(entityDetails.repo_path, exist_ok=True)
+def make_directories(entity_details):
+    os.makedirs(entity_details.java_src_package_path, exist_ok=True)
+    os.makedirs(entity_details.model_path, exist_ok=True)
+    os.makedirs(entity_details.repo_path, exist_ok=True)
 
 
 def main():
     """
     Entry point
     """
-    entityDetails = SpringEntityBuilder(sys.argv[1], sys.argv[2])
+    entity_details = SpringEntityBuilder(sys.argv[1], sys.argv[2])
     try:
         other_opts = sys.argv[3:]
     except IndexError:
         other_opts = []
-    make_directories(entityDetails)
+    make_directories(entity_details)
     # write the model template
-    generate_from_entity_template(entityDetails)
-    generate_from_repo_template(entityDetails)
+    generate_from_entity_template(entity_details)
+    generate_from_repo_template(entity_details)
     if 'skp_cnt' not in other_opts:
-        os.makedirs(entityDetails.controller_path, exist_ok=True)
-        generate_from_controller_template(entityDetails)
-    auditPath = f'{entityDetails.model_path}/AuditModel.java'
-    if not os.path.exists(auditPath):
-        write_from_template(entityDetails.template_vars, AUDIT_MODEL_FILE, auditPath)
+        os.makedirs(entity_details.controller_path, exist_ok=True)
+        generate_from_controller_template(entity_details)
+    audit_path = f'{entity_details.java_src_package_path}/AuditModel.java'
+    if not os.path.exists(audit_path):
+        write_from_template(entity_details.template_vars, AUDIT_MODEL_FILE, audit_path)
 
 
 msg = """Parameters missing: %s <class_name in singular form i.e: "Book Author"> <package_name> [skp_cnt]"""

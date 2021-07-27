@@ -47,7 +47,6 @@ public interface BookAuthorRepository extends PagingAndSortingRepository<BookAut
 """
         )
 
-
     def test_generate_repository_from_entity(self):
         content = spring_entity_gen.make_code_from_template(
             {
@@ -82,7 +81,6 @@ public class BookAuthor extends AuditModel {
 }
 """
         )
-
 
     def test_generate_controller_from_template(self):
         self.maxDiff = None
@@ -126,7 +124,6 @@ public class BookAuthorController {
 }
 """
         )
-
 
 
 if __name__ == "__main__":
