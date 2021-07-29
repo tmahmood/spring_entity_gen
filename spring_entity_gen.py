@@ -68,11 +68,12 @@ class SpringEntityBuilder(object):
         self.java_class_name = java_class_name
         self.template_vars = {'package_name': package_name}
         make_java_class_names(java_class_name, self.template_vars)
+        code_folder = self.template_vars['snake_case']
         self.java_src_package_path = 'src/main/java/%s' % package_name.replace('.', '/')
         # make paths
-        self.model_path = f'{self.java_src_package_path}/{java_class_name}'
-        self.repo_path = f'{self.java_src_package_path}/{java_class_name}'
-        self.controller_path = f'{self.java_src_package_path}/{java_class_name}'
+        self.model_path = f'{self.java_src_package_path}/{code_folder}'
+        self.repo_path = f'{self.java_src_package_path}/{code_folder}'
+        self.controller_path = f'{self.java_src_package_path}/{code_folder}'
         #
         self.model_path_with_name = '{}/{}.java'.format(
             self.model_path,
