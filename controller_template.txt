@@ -1,4 +1,4 @@
-package %(package_name)s.controllers;
+package %(package_name)s.%(snake_case)s;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;

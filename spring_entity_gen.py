@@ -58,6 +58,7 @@ def make_java_class_names(input_class_name, replacements):
     replacements['camel_case'] = make_nice_names(input_class_name).replace(' ', '')
     replacements['camel_case_plural'] = p.plural(replacements['camel_case'])
     replacements['snake_case_plural'] = p.plural(input_class_name.lower().replace(' ', '_'))
+    replacements['snake_case'] = input_class_name.lower().replace(' ', '_')
 
 
 class SpringEntityBuilder(object):

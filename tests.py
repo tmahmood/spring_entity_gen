@@ -8,38 +8,43 @@ class TestStringMethods(unittest.TestCase):
         result = {}
         spring_entity_gen.make_java_class_names("Book Author", result)
         self.assertEqual(
-            result['java_class_name'],
-            "BookAuthor"
+            "BookAuthor",
+            result['java_class_name']
         )
         self.assertEqual(
-            result['camel_case_plural'],
-            "bookAuthors"
+            "bookAuthors",
+            result['camel_case_plural']
         )
         self.assertEqual(
-            result['snake_case_plural'],
-            "book_authors"
+            "book_authors",
+            result['snake_case_plural']
         )
         self.assertEqual(
-            result['camel_case'],
-            "bookAuthor"
+            "bookAuthor",
+            result['camel_case']
         )
-    
+        self.assertEqual(
+            "book_author",
+            result['snake_case']
+        )
+
     def test_generate_repository_from_template(self):
         content = spring_entity_gen.make_code_from_template(
             {
                 'java_class_name': 'BookAuthor',
-                'package_name': 'com.package'
-            }, 
-            spring_entity_gen.REPO_FILE, 
+                'package_name': 'com.package',
+                'snake_case': 'book_author'
+            },
+            spring_entity_gen.REPO_FILE,
         )
         self.assertEqual(
             content,
-            """package com.package.repositories;
+            """package com.package.book_author;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 
-import com.package.models.BookAuthor;
+import com.package.book_author.BookAuthor;
 
 public interface BookAuthorRepository extends PagingAndSortingRepository<BookAuthor, Long> { 
 
@@ -52,13 +57,14 @@ public interface BookAuthorRepository extends PagingAndSortingRepository<BookAut
             {
                 'java_class_name': 'BookAuthor',
                 'snake_case_plural': 'book_authors',
-                'package_name': 'com.package'
-            }, 
-            spring_entity_gen.ENTITY_FILE, 
+                'package_name': 'com.package',
+                'snake_case': 'book_author'
+            },
+            spring_entity_gen.ENTITY_FILE,
         )
         self.assertEqual(
             content,
-            """package com.package.models;
+            """package com.package.book_author;
 
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -89,13 +95,14 @@ public class BookAuthor extends AuditModel {
                 'java_class_name': 'BookAuthor',
                 'camel_case_plural': 'bookAuthors',
                 'camel_case': 'bookAuthor',
-                'package_name': 'com.package'
-            }, 
-            spring_entity_gen.CTRL_FILE, 
+                'package_name': 'com.package',
+                'snake_case': 'book_author'
+            },
+            spring_entity_gen.CTRL_FILE,
         )
         self.assertEqual(
             content,
-            """package com.package.controllers;
+            """package com.package.book_author;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -128,4 +135,3 @@ public class BookAuthorController {
 
 if __name__ == "__main__":
     unittest.main()
-    

@@ -1,4 +1,4 @@
-package %(package_name)s.models;
+package %(package_name)s.%(snake_case)s;
 
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
