@@ -11,6 +11,7 @@ ENTITY_FILE = MY_PATH + '/entity_template.txt'
 REPO_FILE = MY_PATH + '/repository_template.txt'
 CTRL_FILE = MY_PATH + '/controller_template.txt'
 AUDIT_MODEL_FILE = MY_PATH + '/audit_model_template.txt'
+PROJECTION_FILE = MY_PATH + '/projection_template.txt'
 
 
 def make_code_from_template(replacements, template):
@@ -50,8 +51,9 @@ def make_java_class_names(input_class_name, replacements):
         @returns:
             class name: BookAuthor
             table name: book_authors
-            java variable name: bookAuthor
+            camel case singular: bookAuthor
             api endpoint: bookAuthors
+            snake case: book_author
     """
     p = inflect.engine()
     replacements['java_class_name'] = input_class_name.title().replace(' ', '')
@@ -72,11 +74,15 @@ class SpringEntityBuilder(object):
         self.java_src_package_path = 'src/main/java/%s' % package_name.replace('.', '/')
         # make paths
         self.model_path = f'{self.java_src_package_path}/{code_folder}'
+        self.projection_path = f'{self.java_src_package_path}/{code_folder}'
         self.repo_path = f'{self.java_src_package_path}/{code_folder}'
         self.controller_path = f'{self.java_src_package_path}/{code_folder}'
         #
         self.model_path_with_name = '{}/{}.java'.format(
             self.model_path,
+            self.template_vars['java_class_name'])
+        self.projection_file_with_name = '{}/{}.java'.format(
+            self.projection_path,
             self.template_vars['java_class_name'])
         self.repo_path_with_name = '{}/{}Repository.java'.format(
             self.repo_path,
@@ -88,6 +94,7 @@ class SpringEntityBuilder(object):
 
 def generate_from_entity_template(entity_details):
     write_from_template(entity_details.template_vars, ENTITY_FILE, entity_details.model_path_with_name)
+    write_from_template(entity_details.template_vars, CTRL_FILE, entity_details.ctrl_path_w_name)
 
 
 def generate_from_repo_template(entity_details):
@@ -120,12 +127,14 @@ def main():
     if 'skp_cnt' not in other_opts:
         os.makedirs(entity_details.controller_path, exist_ok=True)
         generate_from_controller_template(entity_details)
-    audit_path = f'{entity_details.java_src_package_path}/AuditModel.java'
-    if not os.path.exists(audit_path):
-        write_from_template(entity_details.template_vars, AUDIT_MODEL_FILE, audit_path)
+    if 'with_audit' in other_opts:
+        audit_path = f'{entity_details.java_src_package_path}/AuditModel.java'
+        if not os.path.exists(audit_path):
+            write_from_template(entity_details.template_vars, AUDIT_MODEL_FILE, audit_path)
 
 
-msg = """Parameters missing: %s <class_name in singular form i.e: "Book Author"> <package_name> [skp_cnt]"""
+msg = """Parameters missing: 
+%s <class_name in singular form i.e: "Book Author"> <package_name> [skp_cnt] [with_audit]"""
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         print(msg % sys.argv[0].split('/').pop())
