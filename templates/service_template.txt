@@ -29,10 +29,12 @@ public class %(java_class_name)sService {
     @Autowired
     public %(java_class_name)sService(
         %(java_class_name)sRepository %(camel_case)sRepository,
+        %(java_class_name)sResourceAssembler %(camel_case)sResourceAssembler,
         ProjectionFactory projectionFactory,
         HttpServletRequest httpServletRequest
     ) {
         this.%(camel_case)sRepository = %(camel_case)sRepository;
+        this.%(camel_case)sResourceAssembler = %(camel_case)sResourceAssembler;
         this.httpServletRequest = httpServletRequest;
         this.projectionFactory = projectionFactory;
     }
@@ -47,6 +49,6 @@ public class %(java_class_name)sService {
                     .embed(result, LinkRelation.of("%(camel_case_plural)s"))
                     .build();
         }
-        return designationPageResourceBuilder.getPagedResourcesFromPage(result, %(camel_case)sResourceAssembler);
+        return %(camel_case)sPageResourceBuilder.getPagedResourcesFromPage(result, %(camel_case)sResourceAssembler);
     }
 }
