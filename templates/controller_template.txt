@@ -5,8 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.web.bind.annotation.ResponseBody;
-import %(package_name)s.%(snake_case)s.%(java_class_name)sService;
 
 @Controller    // This means that this class is a Controller
 @RequestMapping(path="/api/v1/%(camel_case_plural)s")
@@ -21,6 +21,6 @@ public class %(java_class_name)sController {
 
     @GetMapping(path="/all")
     public @ResponseBody RepresentationModel<?> getAll%(java_class_name)s(Pageable page) {
-        return %(camel_case)sService.findAll();
+        return %(camel_case)sService.getAll%(java_class_name)s();
     }
 }
