@@ -7,11 +7,13 @@ import sys
 import inflect
 
 MY_PATH = os.path.dirname(os.path.realpath(__file__))
-ENTITY_FILE = MY_PATH + '/entity_template.txt'
-REPO_FILE = MY_PATH + '/repository_template.txt'
-CTRL_FILE = MY_PATH + '/controller_template.txt'
-AUDIT_MODEL_FILE = MY_PATH + '/audit_model_template.txt'
-PROJECTION_FILE = MY_PATH + '/projection_template.txt'
+ENTITY_FILE = MY_PATH + '/templates/entity_template.txt'
+REPO_FILE = MY_PATH + '/templates/repository_template.txt'
+CTRL_FILE = MY_PATH + '/templates/controller_template.txt'
+AUDIT_MODEL_FILE = MY_PATH + '/templates/audit_model_template.txt'
+PROJECTION_FILE = MY_PATH + '/templates/projection_template.txt'
+SERVICE_FILE = MY_PATH + '/templates/service_template.txt'
+ASSEMBLER_FILE = MY_PATH + '/templates/assembler_template.txt'
 
 
 def make_code_from_template(replacements, template):
@@ -31,6 +33,8 @@ def make_code_from_template(replacements, template):
 
 
 def write_to_file(output, content):
+    if os.path.exists(output):
+        return
     with open(output, 'w') as fp:
         fp.write(content)
 
@@ -49,11 +53,11 @@ def make_java_class_names(input_class_name, replacements):
         @param: "Book Author"
 
         @returns:
-            class name: BookAuthor
-            table name: book_authors
-            camel case singular: bookAuthor
-            api endpoint: bookAuthors
-            snake case: book_author
+            java_class_name: BookAuthor
+            camel_case: bookAuthor
+            camel_case_plural: bookAuthors
+            snake_case_plural: book_authors
+            snake_case: book_author
     """
     p = inflect.engine()
     replacements['java_class_name'] = input_class_name.title().replace(' ', '')
@@ -77,6 +81,8 @@ class SpringEntityBuilder(object):
         self.projection_path = f'{self.java_src_package_path}/{code_folder}'
         self.repo_path = f'{self.java_src_package_path}/{code_folder}'
         self.controller_path = f'{self.java_src_package_path}/{code_folder}'
+        self.service_path = f'{self.java_src_package_path}/{code_folder}'
+        self.assembler_path = f'{self.java_src_package_path}/{code_folder}'
         #
         self.model_path_with_name = '{}/{}.java'.format(
             self.model_path,
@@ -89,6 +95,12 @@ class SpringEntityBuilder(object):
             self.template_vars['java_class_name'])
         self.ctrl_path_w_name = '{}/{}Controller.java'.format(
             self.controller_path,
+            self.template_vars['java_class_name'])
+        self.service_path_w_name = '{}/{}Service.java'.format(
+            self.service_path,
+            self.template_vars['java_class_name'])
+        self.assembler_path_w_name = '{}/{}ResourceAssembler.java'.format(
+            self.assembler_path,
             self.template_vars['java_class_name'])
 
 
@@ -103,6 +115,8 @@ def generate_from_repo_template(entity_details):
 
 def generate_from_controller_template(entity_details):
     write_from_template(entity_details.template_vars, CTRL_FILE, entity_details.ctrl_path_w_name)
+    write_from_template(entity_details.template_vars, SERVICE_FILE, entity_details.service_path_w_name)
+    write_from_template(entity_details.template_vars, ASSEMBLER_FILE, entity_details.assembler_path_w_name)
 
 
 def make_directories(entity_details):

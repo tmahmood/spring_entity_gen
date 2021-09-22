@@ -1,0 +1,37 @@
+package %(package_name)s.%(snake_case)s;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.EntityLinks;
+import org.springframework.hateoas.server.RepresentationModelAssembler;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+
+@Component
+public class %(java_class_name)sResourceAssembler implements RepresentationModelAssembler<%(java_class_name)s, EntityModel<%(java_class_name)s>> {
+
+    private final EntityLinks entityLinks;
+    private ArrayList<Link> links = new ArrayList<>();
+
+    @Autowired
+    public %(java_class_name)sResourceAssembler(EntityLinks entityLinks) {
+        this.entityLinks = entityLinks;
+    }
+
+    public void addLink(Link link) {
+        links.add(link);
+    }
+
+    @Override
+    public EntityModel<Designation> toModel(%(java_class_name)s entity) {
+        if (entity == null) {
+            return EntityModel.of(new %(java_class_name)s());
+        }
+        EntityModel<%(java_class_name)s> designationEntityModel = EntityModel.of(entity, links);
+        %(camel_case)sEntityModel.add(entityLinks.linkToItemResource(%(java_class_name)s.class, entity.getId()));
+        %(camel_case)sEntityModel.add(entityLinks.linkToItemResource(%(java_class_name)s.class, entity.getId()).withSelfRel());
+        return %(camel_case)sEntityModel;
+    }
+}

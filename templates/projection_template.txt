@@ -10,8 +10,4 @@ import java.time.LocalDate;
         types = { %(java_class_name.)s.class })
 public interface %(java_class_name)sDetailsProjection {
     long getId();
-    String getName();
-    String getPhone();
-
-    @Value("#{target.team}")
-    Team getTeam();
+}
