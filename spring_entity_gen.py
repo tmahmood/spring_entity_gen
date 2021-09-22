@@ -14,6 +14,7 @@ AUDIT_MODEL_FILE = MY_PATH + '/templates/audit_model_template.txt'
 PROJECTION_FILE = MY_PATH + '/templates/projection_template.txt'
 SERVICE_FILE = MY_PATH + '/templates/service_template.txt'
 ASSEMBLER_FILE = MY_PATH + '/templates/assembler_template.txt'
+PAGE_ASSEMBLER_FILE = MY_PATH + '/templates/page_assembler_template.txt'
 
 
 def make_code_from_template(replacements, template):
@@ -83,6 +84,7 @@ class SpringEntityBuilder(object):
         self.controller_path = f'{self.java_src_package_path}/{code_folder}'
         self.service_path = f'{self.java_src_package_path}/{code_folder}'
         self.assembler_path = f'{self.java_src_package_path}/{code_folder}'
+        self.page_assembler_path = f'{self.java_src_package_path}'
         #
         self.model_path_with_name = '{}/{}.java'.format(
             self.model_path,
@@ -102,6 +104,7 @@ class SpringEntityBuilder(object):
         self.assembler_path_w_name = '{}/{}ResourceAssembler.java'.format(
             self.assembler_path,
             self.template_vars['java_class_name'])
+        self.page_assembler_path_w_name = f'{self.java_src_package_path}/PageResourceBuilder.java'
 
 
 def generate_from_entity_template(entity_details):
@@ -117,6 +120,7 @@ def generate_from_controller_template(entity_details):
     write_from_template(entity_details.template_vars, CTRL_FILE, entity_details.ctrl_path_w_name)
     write_from_template(entity_details.template_vars, SERVICE_FILE, entity_details.service_path_w_name)
     write_from_template(entity_details.template_vars, ASSEMBLER_FILE, entity_details.assembler_path_w_name)
+    write_from_template(entity_details.template_vars, PAGE_ASSEMBLER_FILE, entity_details.page_assembler_path_w_name)
 
 
 def make_directories(entity_details):

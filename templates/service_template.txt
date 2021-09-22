@@ -1,11 +1,17 @@
 package %(package_name)s.%(snake_case)s;
+
+import com.di.contact_database_api.PageResourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.projection.ProjectionFactory;
+import org.springframework.hateoas.LinkRelation;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.mediatype.hal.HalModelBuilder;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseBody;
+import javax.servlet.http.HttpServletRequest;
+
 import %(package_name)s.%(snake_case)s.%(java_class_name)s;
 import %(package_name)s.%(snake_case)s.%(java_class_name)sRepository;
 
@@ -21,15 +27,21 @@ public class %(java_class_name)sService {
 
 
     @Autowired
-    public %(java_class_name)sController(%(java_class_name)sRepository %(camel_case)sRepository) {
+    public %(java_class_name)sService(
+        %(java_class_name)sRepository %(camel_case)sRepository,
+        ProjectionFactory projectionFactory,
+        HttpServletRequest httpServletRequest
+    ) {
         this.%(camel_case)sRepository = %(camel_case)sRepository;
+        this.httpServletRequest = httpServletRequest;
+        this.projectionFactory = projectionFactory;
     }
 
     public @ResponseBody RepresentationModel<?> getAll%(java_class_name)s() {
         return pageBuilder(%(camel_case)sRepository.findAll(Pageable.unpaged()));
     }
 
-    private RepresentationModel<?> pageBuilder(Page<%(java_class_name)s> result) {
+    private RepresentationModel<?> pageBuilder(Page<?> result) {
         if (result.isEmpty()) {
             return HalModelBuilder.emptyHalModel()
                     .embed(result, LinkRelation.of("%(camel_case_plural)s"))

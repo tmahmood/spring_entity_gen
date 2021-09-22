@@ -1,0 +1,28 @@
+import org.springframework.data.domain.Page;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.hateoas.server.RepresentationModelAssembler;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class PageResourceBuilder<T> {
+
+    public PagedModel<EntityModel<T>> getPagedResourcesFromPage(
+            Page<T> items,
+            RepresentationModelAssembler<T, EntityModel<T>> resourceAssembler) {
+
+        List<EntityModel<T>> entityModelList =
+                items.getContent()
+                        .stream()
+                        .map(resourceAssembler::toModel)
+                        .collect(Collectors.toList());
+
+        return PagedModel.of(entityModelList,
+                new PagedModel.PageMetadata(
+                        items.getSize(),
+                        items.getNumber(),
+                        items.getTotalElements()
+                )
+        );
+    }
+}
