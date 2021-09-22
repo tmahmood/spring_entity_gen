@@ -43,7 +43,7 @@ public class %(java_class_name)sService {
         return pageBuilder(%(camel_case)sRepository.findAll(Pageable.unpaged()));
     }
 
-    private RepresentationModel<?> pageBuilder(Page<?> result) {
+    private RepresentationModel<?> pageBuilder(Page<%(java_class_name)s> result) {
         if (result.isEmpty()) {
             return HalModelBuilder.emptyHalModel()
                     .embed(result, LinkRelation.of("%(camel_case_plural)s"))
