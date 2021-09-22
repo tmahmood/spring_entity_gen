@@ -109,7 +109,7 @@ class SpringEntityBuilder(object):
 
 def generate_from_entity_template(entity_details):
     write_from_template(entity_details.template_vars, ENTITY_FILE, entity_details.model_path_with_name)
-    write_from_template(entity_details.template_vars, CTRL_FILE, entity_details.ctrl_path_w_name)
+    write_from_template(entity_details.template_vars, PROJECTION_FILE, entity_details.projection_file_with_name)
 
 
 def generate_from_repo_template(entity_details):
