@@ -25,7 +25,7 @@ public class %(java_class_name)sResourceAssembler implements RepresentationModel
     }
 
     @Override
-    public EntityModel<Designation> toModel(%(java_class_name)s entity) {
+    public EntityModel<%(java_class_name)s> toModel(%(java_class_name)s entity) {
         if (entity == null) {
             return EntityModel.of(new %(java_class_name)s());
         }
