@@ -5,6 +5,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import %(package_name)s.%(snake_case)s.%(java_class_name)s;
 
-public interface %(java_class_name)sRepository extends PagingAndSortingRepository<%(java_class_name)s, Long> { 
+@RepositoryRestResource(collectionResourceRel = "%(camel_case)s", path = "%(camel_case_plural)s")
+public interface %(java_class_name)sRepository extends PagingAndSortingRepository<%(java_class_name)s, Long> {
 
 }

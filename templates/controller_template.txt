@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@Controller    // This means that this class is a Controller
-@RequestMapping(path="/api/v1/%(camel_case_plural)s")
+@RepositoryRestController
 public class %(java_class_name)sController {
 
     private final %(java_class_name)sService %(camel_case)sService;
@@ -19,7 +18,7 @@ public class %(java_class_name)sController {
         this.%(camel_case)sService = %(camel_case)sService;
     }
 
-    @GetMapping(path="/all")
+    @GetMapping(path="%(camel_case_plural)s")
     public @ResponseBody RepresentationModel<?> getAll%(java_class_name)s(Pageable page) {
         return %(camel_case)sService.getAll%(java_class_name)s();
     }
