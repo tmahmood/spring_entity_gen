@@ -41,6 +41,7 @@ def write_to_file(output, content):
 
 
 def write_from_template(replacements, template, output):
+    print(template)
     content = make_code_from_template(replacements, template)
     write_to_file(output, content)
 
